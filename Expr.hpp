@@ -32,13 +32,13 @@ case struct Plus : Expr{
     Plus(L const& l, R const& r) : lhs(l), rhs(r) {};
 };
 
-case struct Mul : Expr{
+case struct Mult : Expr{
     const L& lhs;
     const R& rhs;
     double value;
     std::string name;
 
-    Mul(L const& l, R const& r) : lhs(l), rhs(r) {};
+    Mult(L const& l, R const& r) : lhs(l), rhs(r) {};
 };
 
 case struct Div : Expr{
@@ -89,6 +89,3 @@ struct NumVal{
         return os << "NumVal(" << n.value << ")";
     }
 };
-
-
-// Plus(Num(1), Mul(Num(2), Num(3))

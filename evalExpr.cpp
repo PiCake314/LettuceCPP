@@ -2,18 +2,15 @@
 #include <unordered_map>
 #include "Expr.hpp"
 
+
 typedef std::unordered_map<std::string, NumVal> Environment;
 
 
 template <template <typename, typename> class T, typename L, typename R>
 requires std::is_base_of<Expr, T<L, R>>::value
-NumVal evalExpr(const T<L, R>& e, Environment env){
+NumVal evalExpr(const T<L, R>& e, const Environment env){
 
-    auto lambdaEval = [&env](auto& expr){
-        return evalExpr(expr, env);
-    };
-
-    if (std::is_same_v<T<L, R>, Num<L, R>>){
+    if constexpr(std::is_same_v<T<L, R>, Num<L, R>>){
         return NumVal(e.value);
     }
 
@@ -30,7 +27,7 @@ NumVal evalExpr(const T<L, R>& e, Environment env){
         return NumVal(lhs.value + rhs.value);
     }
     
-    if constexpr(std::is_same_v<T<L, R>, Mul<L, R>>){
+    if constexpr(std::is_same_v<T<L, R>, Mult<L, R>>){
         auto lhs = evalExpr(e.lhs, env);
         auto rhs = evalExpr(e.rhs, env);
         return NumVal(lhs.value * rhs.value);
@@ -55,8 +52,8 @@ NumVal evalExpr(const T<L, R>& e, Environment env){
 
     if constexpr(std::is_same_v<T<L, R>, MultiLet<L, R>>){
         return evalExpr(e.rhs, e.params.zip(e.lhs).fold(env)(
-            [&env, lambdaEval](Environment acc, auto elt){
-                acc[elt.first] = lambdaEval(elt.second);
+            [&env](Environment acc, auto elt){
+                acc[elt.first] = evalExpr(elt.second, env);
                 return acc;
             }
         ));
@@ -64,23 +61,16 @@ NumVal evalExpr(const T<L, R>& e, Environment env){
 
 
     throw std::runtime_error("Unknown type: " + std::string(typeid(T<L, R>).name()));
+
+    return NumVal(0);
 }
 
 
 int main(){
 
-    auto e = MultiLet(Bector<std::string>("x", "y", "z"), Bector(Num(5), Num(7), Num(3)),Plus(Var("x"), Mul(Var("y"), Var("z"))));
+    auto e = MultiLet(Bector<std::string>("x", "y", "z"), Bector(Num(5), Num(7), Num(3)),Plus(Var("x"), Mult(Var("y"), Var("z"))));
 
     Environment env;
-
-    // e.params.zip(e.lhs).fold(env)(
-    //     [env](Environment acc, auto elt){
-    //         return acc.insert({elt.first, evalExpr(elt.second, env)});
-    //     }
-    // );
-
-    // Multi let x, y, z = 5, 7, 3 in x + y * z;
-
 
     std::cout << (evalExpr(e, env)) << std::endl;
 
