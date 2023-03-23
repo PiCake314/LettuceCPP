@@ -14,11 +14,13 @@ struct Num : Expr{
 };
 
 
-// template <typename L = Expr, typename R = Expr>
-// struct Var : Expr{
-//     std::string name;
-//     Var(std::string n) : name(n) {};
-// };
+template <typename L = Expr, typename R = Expr>
+struct Var : Expr{
+    std::string name;
+    double value;
+
+    Var(std::string n) : name(n) {};
+};
 
 case struct Plus : Expr{
     L const& lhs;
@@ -52,13 +54,14 @@ case struct Minus : Expr{
     Minus(L const& l, R const& r) : lhs(l), rhs(r) {};
 };
 
-// case struct Let : Expr{
-//     std::string name;
-//     L const& lhs;
-//     R const& rhs;
+case struct Let : Expr{
+    std::string name;
+    L const& lhs;
+    R const& rhs;
+    double value;
 
-//     Let(std::string n, L const& l, R const& r) : name(n), lhs(l), rhs(r) {};
-// };
+    Let(std::string n, L const& l, R const& r) : name(n), lhs(l), rhs(r) {};
+};
 
 // case struct MultiLet : Expr{
 //     Bector<std::string> names;
