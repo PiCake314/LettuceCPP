@@ -10,9 +10,9 @@ template <template <typename, typename> class T, typename L, typename R>
 requires std::is_base_of<Expr, T<L, R>>::value
 NumVal evalExpr(T<L, R>& e, const Environment env){
 
-    auto lambdaEval = [&env](T<L, R> ex){
-        return evalExpr(ex, env);
-    };
+    // auto lambdaEval = [&env](T<L, R> ex){
+    //     return evalExpr(ex, env);
+    // };
 
     if constexpr(std::is_same_v<T<L, R>, Num<L, R>>){
         return NumVal(e.value);
@@ -54,14 +54,14 @@ NumVal evalExpr(T<L, R>& e, const Environment env){
         return evalExpr(e.rhs, env);
     }
 
-    if constexpr(std::is_same_v<T<L, R>, MultiLet<L, R>>){
-        return evalExpr(e.rhs, e.params.zip(e.lhs).fold(env)(
-            [lambdaEval](Environment acc, auto elt){
-                acc[elt.first] = lambdaEval(elt.second);
-                return acc;
-            }
-        ));
-    }
+    // if constexpr(std::is_same_v<T<L, R>, MultiLet<L, R>>){
+    //     return evalExpr(e.rhs, e.params.zip(e.lhs).fold(env)(
+    //         [lambdaEval](Environment acc, auto elt){
+    //             acc[elt.first] = lambdaEval(elt.second);
+    //             return acc;
+    //         }
+    //     ));
+    // }
 
 
     throw std::runtime_error("Unknown type: " + std::string(typeid(T<L, R>).name()));
@@ -73,7 +73,10 @@ NumVal evalExpr(T<L, R>& e, const Environment env){
 int main(){
     // auto e = MultiLet(Bector<std::string>("x","y","z","w"), Bector(Num(10.0), Num(10.0), Num(10.0), Num(20.0)), MultiLet(Bector<std::string>(), Bector<Expr>(), Let("w", Var("w"), Mult(Var("x"), Plus(Var("y"), Var("w"))))));
 
-    auto e = MultiLet(Bector<std::string>("x", "y", "z"), Bector(NumVal(5), NumVal(7), NumVal(3)), Plus(Var("x"), Mult(Var("y"), Var("z"))));
+    // auto e = MultiLet(Bector<std::string>("x", "y", "z"), Bector(NumVal(5), NumVal(7), NumVal(3)), Plus(Var("x"), Mult(Var("y"), Var("z"))));
+
+
+    auto e = Let("x", Num(10), Plus(Var("x"), Num(20)));
 
     Environment env;
 
