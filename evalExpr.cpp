@@ -67,7 +67,7 @@ NumVal evalExpr(const T<L, R> e, Environment env){
 
 
 int main(){
-    auto e = MultiLet(Bector<std::string>("x","y","z","w"), Bector(Num(10.0), Num(10.0), Num(10.0), Num(20.0)), MultiLet(Bector<std::string>(), Bector<Num<>>(), Let("w", Var("w"), Mult(Var("x"), Plus(Var("y"), Var("w"))))));
+    auto e = MultiLet(Bector<std::string>("x","y","z","w"), Bector(Plus(Num(7), Num(3)), Num(10.0), Num(10.0), Num(20.0)), MultiLet(Bector<std::string>(), Bector<Num<>>(), Let("w", Var("w"), Mult(Var("x"), Plus(Var("y"), Var("w"))))));
 
     // auto  e = MultiLet(Bector<std::string>("x", "y", "z"), Bector(Num(5), Num(7), Num(3)), Plus(Var("x"), Mult(Var("y"), Var("z"))));
 
@@ -76,7 +76,7 @@ int main(){
 
     Environment env;
 
-    std::cout << (evalExpr(e, env)) << std::endl;
+    std::cout << evalExpr(e, env) << std::endl;
 
 
     return 0;
