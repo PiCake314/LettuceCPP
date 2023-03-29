@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ostream>
-#include "../mylibs/Bector/Bector.hpp"
+#include "../Bector/Bector.hpp"
 
 #define case template <typename L, typename R>
 
