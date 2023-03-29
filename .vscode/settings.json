@@ -68,6 +68,7 @@
         "__memory": "cpp",
         "iomanip": "cpp",
         "typeindex": "cpp",
-        "*.tpp": "cpp"
+        "*.tpp": "cpp",
+        "any": "cpp"
     }
 }

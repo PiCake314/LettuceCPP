@@ -24,17 +24,22 @@ struct Var : Expr{
 };
 
 case struct Plus : Expr{
-    const L& lhs;
-    const R& rhs;
+    // const L& lhs;
+    L lhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
+    Plus() : lhs(Num(0)), rhs(Num(0)) {}; // for Bector initialization
     Plus(L const& l, R const& r) : lhs(l), rhs(r) {};
 };
 
 case struct Mult : Expr{
-    const L& lhs;
-    const R& rhs;
+    // const L& lhs;
+    L lhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
@@ -42,8 +47,10 @@ case struct Mult : Expr{
 };
 
 case struct Div : Expr{
-    const L& lhs;
-    const R& rhs;
+    // const L& lhs;
+    L lhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
@@ -51,8 +58,10 @@ case struct Div : Expr{
 };
 
 case struct Minus : Expr{
-    const L& lhs;
-    const R& rhs;
+    // const L& lhs;
+    L lhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
@@ -61,8 +70,10 @@ case struct Minus : Expr{
 
 case struct Let : Expr{
     std::string par;
-    const L& lhs;
-    const R& rhs;
+    // const L& lhs;
+    L lhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
@@ -72,7 +83,8 @@ case struct Let : Expr{
 case struct MultiLet : Expr{
     Bector<std::string> params;
     Bector<L> lhs;
-    const R& rhs;
+    // const R& rhs;
+    R rhs;
     double value;
     std::string name;
 
