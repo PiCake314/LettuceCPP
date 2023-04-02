@@ -3,92 +3,55 @@
 #include <ostream>
 #include "../Bector/Bector.hpp"
 
-#define case template <typename L, typename R>
+struct Expr{ virtual ~Expr() = default; };
 
-struct Expr{};
 
-template <typename L = Expr, typename R = Expr>
 struct Num : Expr{
-    std::string name;
     double value;
-    Num() : value(0) {}; // for Bector initialization
     Num(double v) : value(v) {};
 };
 
-
-template <typename L = Expr, typename R = Expr>
 struct Var : Expr{
     std::string name;
-    double value;
     Var(std::string n) : name(n) {};
 };
 
-case struct Plus : Expr{
-    // const L& lhs;
-    L lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
-    std::string name;
-
-    Plus() : lhs(Num(0)), rhs(Num(0)) {}; // for Bector initialization
-    Plus(L const& l, R const& r) : lhs(l), rhs(r) {};
+struct Plus : Expr{
+    Expr *lhs;
+    Expr *rhs;
+    Plus(Expr *l, Expr *r) : lhs(l), rhs(r) {};
 };
 
-case struct Mult : Expr{
-    // const L& lhs;
-    L lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
-    std::string name;
-
-    Mult(L const& l, R const& r) : lhs(l), rhs(r) {};
+struct Mult : Expr{
+    Expr *lhs;
+    Expr *rhs;
+    Mult(Expr *l, Expr *r) : lhs(l), rhs(r) {};
 };
 
-case struct Div : Expr{
-    // const L& lhs;
-    L lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
-    std::string name;
-
-    Div(L const& l, R const& r) : lhs(l), rhs(r) {};
+struct Div : Expr{
+    Expr *lhs;
+    Expr *rhs;
+    Div(Expr *l, Expr *r) : lhs(l), rhs(r) {};
 };
 
-case struct Minus : Expr{
-    // const L& lhs;
-    L lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
-    std::string name;
-
-    Minus(L const& l, R const& r) : lhs(l), rhs(r) {};
+struct Minus : Expr{
+    Expr *lhs;
+    Expr *rhs;
+    Minus(Expr *l, Expr *r) : lhs(l), rhs(r) {};
 };
 
-case struct Let : Expr{
-    std::string par;
-    // const L& lhs;
-    L lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
+struct Let : Expr{
     std::string name;
-
-    Let(std::string n, L const& l, R const& r) : par(n), lhs(l), rhs(r) {};
+    Expr *value;
+    Expr *body;
+    Let(std::string n, Expr *v, Expr *b) : name(n), value(v), body(b) {};
 };
 
-case struct MultiLet : Expr{
-    Bector<std::string> params;
-    Bector<L> lhs;
-    // const R& rhs;
-    R rhs;
-    double value;
-    std::string name;
-
-    MultiLet(Bector<std::string> n, Bector<L> l, R const& r) : params(n), lhs(l), rhs(r) {};
+struct MultiLet : Expr{
+    Bector<std::string> names;
+    Bector<Expr*> values;
+    Expr *body;
+    MultiLet(Bector<std::string> n, Bector<Expr*> v, Expr *b) : names(n), values(v), body(b) {};
 };
 
 
