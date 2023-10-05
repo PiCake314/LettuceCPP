@@ -1,4 +1,5 @@
-.vscode
+.vscode/
 a.out
 main
 Makefile
+exprString.cpp

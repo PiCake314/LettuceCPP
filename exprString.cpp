@@ -47,7 +47,7 @@ case struct Minus : Expr{
 
 template <template <typename, typename> class T, typename L, typename R>
 requires std::is_base_of<Expr, T<L, R>>::value
-std::string evalExpr(T<L, R> e){
+std::string evalExpr(T<L, R> e) noexcept {
 
     if constexpr(std::is_same_v<T<L, R>, Num<L, R>>)
         return std::to_string(e.value);
